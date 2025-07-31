@@ -22,14 +22,14 @@ def sign_in(driver, wait, email, password):
     driver.find_element(By.XPATH, "/html/body/div/div/div/form/button").click()
     wait.until(EC.url_contains("client.aceint.ai"))
 
-# ✅ Test 1: Login validation
+# Test 1: Login validation
 def test_valid_signin(setup):
     """Test login with valid email and password"""
     driver, wait = setup
     sign_in(driver, wait, "atulthakre511@gmail.com", "987654321")
     assert "AceInt" in driver.title
 
-# ✅ Test 2: Open Positions UI validation
+# Test 2: Open Positions UI validation
 def test_open_positions_ui(setup):
     """Test the presence of 'Open Positions' and UI elements after login"""
     driver, wait = setup
@@ -41,7 +41,7 @@ def test_open_positions_ui(setup):
     apply_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Apply']")))
     assert apply_button.is_displayed()
 
-# ✅ Test 3: Apply flow (Upload resume, agree terms, start interview)
+# Test 3: Apply flow (Upload resume, agree terms, start interview)
 def test_apply_button_click(setup):
     """Test the full apply process including upload, agreement, and starting interview"""
     driver, wait = setup
@@ -51,15 +51,12 @@ def test_apply_button_click(setup):
     apply_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Apply']")))
     apply_button.click()
 
-    # ✅ Upload Resume (assuming input[type='file'] is used)
+    # Upload Resume (assuming input[type='file'] is used)
     upload_input = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@type='file']")))
     upload_input.send_keys(r"C:\Users\HP\Downloads\Jaishri_Resume...pdf")  # Change path to your local resume
 
-    # ✅ Agree to Terms
-    # agree_checkbox = wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[3]/div[2]/form/div[2]/div/div/label/button")))
-    # agree_checkbox.click()
-
-    # Agree to Terms (Checkbox or Button)
+    # Agree to Terms
+    
     agree_checkbox_label = wait.until(EC.element_to_be_clickable((
     By.XPATH, "/html/body/div[3]/div[2]/form/div[2]/div/div/label/button"
     )))
@@ -69,9 +66,9 @@ def test_apply_button_click(setup):
 
 
 
-    # ✅ Click Start Interview
+    # Click Start Interview
     start_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Start Interview')]")))
     start_button.click()
 
-    # ✅ Final Assertion (URL or modal opened)
+    # Final Assertion (URL or modal opened)
     assert "interview" in driver.current_url or "round" in driver.page_source.lower()
